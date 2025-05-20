@@ -7,7 +7,7 @@ const User_client = () => {
     name: string;
     username: string;
     email: string;
-    phone: string;
+    phone: string; 
   };
   const [user, setUser] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,7 +39,7 @@ const User_client = () => {
   return (
     <>
       {user.map((us) => (
-        <div className="flex m-2">
+        <div key={us.id} className="flex m-2">
           <div>{us.id + " " + us.name}</div>
           <div className="mx-2">username: {us.username}</div>
         </div>
