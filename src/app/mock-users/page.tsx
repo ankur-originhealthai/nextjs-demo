@@ -4,7 +4,6 @@ const Mock_users = async () => {
   type MockUser = {
     id: number;
     name: string;
-     
   };
 
     const res = await fetch("https://6725afb9c39fedae05b58958.mockapi.io/users");
