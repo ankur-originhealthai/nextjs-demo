@@ -34,9 +34,9 @@ export default function RootLayout({
         </header> */}
         <Navigations />
         {children}
-        <footer className="bg-slate-900 text-white p-4 text-center">
-          Ankur Baijal
-        </footer>
+        {/* <footer className="bg-slate-900 text-white p-4 text-center fixed bottom-0">
+          Made by : Ankur Baijal
+        </footer> */}
       </body>
     </html>
   );
