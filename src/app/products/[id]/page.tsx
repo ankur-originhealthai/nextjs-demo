@@ -3,4 +3,4 @@ export default async function Product({params} : {params : {id:String}}){
     return(
         <h1>Product : {id}</h1>
     )
-}
+} //here params are async  
