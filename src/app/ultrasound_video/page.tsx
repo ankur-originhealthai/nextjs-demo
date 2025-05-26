@@ -1,7 +1,7 @@
 "use client";
 import Video from "next-video"
 import { useRef, useState } from "react";
-import ultrasoundvideo from '/videos/ultrasoundvideo.mp4';
+import ultrasoundvideo from '/videos/ultrasound.mp4';
 import Instaplay from 'player.style/instaplay/react';
 
 const Ultrasound_video = () => {
