@@ -2,13 +2,15 @@
 import axios, {AxiosError} from "axios"
 import Link from "next/link"
 import { useState } from "react"
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import useUserStore from "../../store/userStore";
 
 const Login = () => {
     const [emailId, setEmailId] = useState("")
     const [password, setPassword] = useState("")
-    const [data, setData] = useState("")
     const [error, setError]= useState("")
+    const router = useRouter()
+    const addUser = useUserStore((state) => state.addUser)
 
     const handleLogin = async () =>{
       setError("")
@@ -18,7 +20,8 @@ const Login = () => {
             password
         },
         {withCredentials: true})
-        setData(res.data)
+        addUser(res.data.data)
+        router.push('/')
         }
         catch(err){
           if(axios.isAxiosError(err) && err.response){
