@@ -1,25 +1,31 @@
 "use client"
-import axios from "axios"
+import axios, {AxiosError} from "axios"
+import Link from "next/link"
 import { useState } from "react"
+import { usePathname } from "next/navigation";
 
 const Login = () => {
     const [emailId, setEmailId] = useState("")
     const [password, setPassword] = useState("")
     const [data, setData] = useState("")
+    const [error, setError]= useState("")
 
     const handleLogin = async () =>{
+      setError("")
         try{
-          console.log("ankur")
         const res = await axios.post("http://localhost:3001/auth/login",{
             emailId,
             password
         },
         {withCredentials: true})
         setData(res.data)
-        console.log(res.data)
         }
         catch(err){
-          console.error(err)
+          if(axios.isAxiosError(err) && err.response){
+            setError(err.response.data.message)
+            console.log("Error" + error)
+          }
+          
         }
         
     
@@ -80,7 +86,7 @@ const Login = () => {
                 />
               </div>
             </div>
-
+            <div className = "m-3 text-red-400">{error}</div>
             <div>
               <button
                 onClick={handleLogin}
@@ -89,8 +95,19 @@ const Login = () => {
                 Login
               </button>
             </div>
+            <div className="m-2 px-10">
+              Do not have an Account? 
+              <Link
+        href="/signUp"
+        className="mr-4 text-blue px-3 font-extrabold"
+      >
+        SignUp
+      </Link>
+            </div>
+            
           
         </div>
+        
       </div>
 
         </>

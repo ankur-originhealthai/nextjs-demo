@@ -28,6 +28,7 @@ export const Navigations = () => {
       >
         Login
       </Link>
+      
       </div>
       {/* <Link
         href="/products/1"
