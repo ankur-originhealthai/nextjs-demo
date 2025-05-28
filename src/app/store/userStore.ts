@@ -6,27 +6,36 @@ type User = {
     emailId: string;
     password: string;
     disease: string;
-    userId: number
+    userId: number;
+}
+type Patient = {
+    firstName: string;
+    lastName: string;
+    disease: string;
+    userId: number;
+    patientId: number;
 }
 
 type userStore = {
-    user: User[],
+    user: User |null,
+    patient: Patient| null,
     addUser: (user : User) => void
     removeUser : ()=> void
+    addPatient : (patient : Patient) => void
 }
 
 const useUserStore = create <userStore>((set) => ({
-    user: [],
-    addUser : (user) =>{
-        set((state) => ({
-            user : [user, ...state.user]
-        }))
-    },
+    user: null,
+    patient: null,
+    addUser : (user) =>set({user})
+    ,
     removeUser : () => {
         set(() => ({
-            user: []
+            user: null
         }));
-    }
+    },
+    addPatient : (patient) =>set({patient})
+    
 
 }))
 export default useUserStore

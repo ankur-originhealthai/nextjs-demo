@@ -3,11 +3,36 @@ import axios from "axios";
 import useUserStore from "../app/store/userStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 export const Navigations = () => {
   const router = useRouter();
   const pathname = usePathname();
   const User = useUserStore((state) => state.user);
   const Logout = useUserStore((state) => state.removeUser);
+  const userData = useUserStore((state) => state.user);
+  const addUser = useUserStore((state) => state.addUser);
+  const fetchUser = async () => {
+    console.log(userData)
+    if (userData ) {
+      return;
+    }
+    try {
+      console.log("api")
+      const user = await axios.get("http://localhost:3001/profile", {
+        withCredentials: true,
+      });
+      addUser(user.data.user);
+
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.status === 401) {
+        router.push("/login");
+      }
+    }
+  };
+
+  useEffect(() =>{
+      fetchUser()
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -45,7 +70,7 @@ export const Navigations = () => {
         >
           About
         </Link>
-        {User.length === 0 && (
+        {!User && (
           <Link
             href="/login"
             className={
@@ -58,7 +83,7 @@ export const Navigations = () => {
           </Link>
         )}
 
-        {User.length !== 0 && (
+        {User&& (
           <>
           <button
             className="mr-4 text-white cursor-pointer"
@@ -68,7 +93,7 @@ export const Navigations = () => {
           </button>
           <Link href=""
           className="mr-4 text-white">
-          Hi, Dr. {User[0].firstName}
+          Hi, Dr. {User.firstName}
         </Link>
           
           
