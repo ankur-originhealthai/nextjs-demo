@@ -7,22 +7,23 @@ import { useEffect } from "react";
 export const Navigations = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const User = useUserStore((state) => state.user);
   const Logout = useUserStore((state) => state.removeUser);
   const userData = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
   const fetchUser = async () => {
-    console.log(userData)
-    if (userData ) {
+    
+    if (userData) {
       return;
     }
     try {
-      console.log("api")
-      const user = await axios.get("http://localhost:3001/profile", {
+      if(document.cookie.includes('token')){
+        const user = await axios.get("http://localhost:3001/profile", {
         withCredentials: true,
       });
       addUser(user.data.user);
 
+      }
+      
     } catch (err) {
       if (axios.isAxiosError(err) && err.status === 401) {
         router.push("/login");
@@ -41,14 +42,13 @@ export const Navigations = () => {
         {},
         { withCredentials: true }
       );
-      router.push("/login");
       Logout();
+      router.push("/login");
+      
     } catch (err) {
       console.error(err);
     }
   };
-
-  console.log(User);
   return (
     <nav className="bg-blue-950 py-3">
       <div>
@@ -70,7 +70,7 @@ export const Navigations = () => {
         >
           About
         </Link>
-        {!User && (
+        {!userData && (
           <Link
             href="/login"
             className={
@@ -83,7 +83,7 @@ export const Navigations = () => {
           </Link>
         )}
 
-        {User&& (
+        {userData&& (
           <>
           <button
             className="mr-4 text-white cursor-pointer"
@@ -93,7 +93,7 @@ export const Navigations = () => {
           </button>
           <Link href=""
           className="mr-4 text-white">
-          Hi, Dr. {User.firstName}
+          Hi, Dr. {userData.firstName}
         </Link>
           
           

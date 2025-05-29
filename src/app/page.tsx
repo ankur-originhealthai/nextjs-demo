@@ -17,7 +17,6 @@ export default function Home() {
       return;
     }
     try {
-      console.log("api")
       const user = await axios.get("http://localhost:3001/profile", {
         withCredentials: true,
       });
@@ -43,6 +42,7 @@ export default function Home() {
       <button className="m-5 p-2 bg-blue-400 rounded-2xl cursor-pointer font-bold text-white">
         <Link href="/patient">Start Ultrasound</Link>{" "}
       </button>
+      <p className="text-blue-400"> Before starting the Ultrasound , you will be asked to enter the details of your Patient</p>
     </div>
   );
 }

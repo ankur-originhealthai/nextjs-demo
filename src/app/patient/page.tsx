@@ -15,8 +15,8 @@ const Patient = () => {
     const userData = useUserStore((state) => state.user);
     const addPatient = useUserStore((state) => state.addPatient)
     const userId = userData?.userId
-    if(!userId){
-        setError("Doctor data not available")
+    if(!userData){
+        route.push("/login")
     }
   const handlePatientDetails = async () => {
     setError("")
@@ -40,7 +40,6 @@ const Patient = () => {
     catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message)
-        console.log("Error" + error)
       }
 
     }
