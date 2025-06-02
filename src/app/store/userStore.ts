@@ -1,5 +1,10 @@
 import { create } from 'zustand'
-
+/** This is a Store component that creates the store for User and Patient data
+ * It has different functions such as - 
+ * 1. addUser
+ * 2. removeUser
+ * 3. addPatient data
+ */
 type User = {
     firstName: string;
     lastName: string;
@@ -27,8 +32,7 @@ type userStore = {
 const useUserStore = create <userStore>((set) => ({
     user: null,
     patient: null,
-    addUser : (user) =>set({user})
-    ,
+    addUser : (user) =>set({user}),
     removeUser : () => {
         set(() => ({
             user: null

@@ -1,26 +1,36 @@
 "use client";
 import Video from "next-video"
-import { useRef, useState } from "react";
-import ultrasoundvideo from '/videos/ultrasound.mp4';
-import Instaplay from 'player.style/instaplay/react';
+import { useState } from "react";
 import useUserStore from "../store/userStore";
 import axios from "axios";
 import Link from "next/link";
 
+/** This is a ultrasSound video component that displays the ultrasound video and 
+ * also provides a record button to start the recording
+ * 
+ * Recording button shows the live data from api that recording was saved completely or not
+ * 
+ * It makes a api call to get the ultrasound video from the backend and also makes a api call to record the video through backend.
+ */
+
 const Ultrasound_video = () => {
   const [startButton, setStartButton] = useState<String>("Start Recoring");
-  const [endButton, setEndButton] = useState<Boolean>(false);
-  const [clipUrl, setClipUrl] = useState <string | null>()
+  //const [endButton, setEndButton] = useState<Boolean>(false);
+  //const [clipUrl, setClipUrl] = useState <string | null>()
 
   const patientData = useUserStore((state) => state.patient);
   const patientId = patientData?.patientId
   const handleRecording = async() => {
     setStartButton("Recoridng in Progress...");
-    setEndButton(true);
+    
     const res = await axios.post("http://localhost:3001/video/record",{
             patientId
         },
         {withCredentials: true})
+
+    if(res){
+      alert(res.data.message)
+    }
     setInterval(() => {
       setStartButton(res.data.message)
       
@@ -47,7 +57,7 @@ const Ultrasound_video = () => {
     <div className="bg-black min-h-screen">
        
         <div className="flex mx-4 justify-center items-center-safe">
-            <div className="w-[640px] h-[660px] ">
+            <div className="w-[540px] h-[560px] ">
           <video className="w-full h-full" src="http://localhost:3001/video/stream" autoPlay muted loop>
           </video>
         </div>
