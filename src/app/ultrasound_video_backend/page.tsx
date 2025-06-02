@@ -5,7 +5,7 @@ import useUserStore from "../store/userStore";
 import axios from "axios";
 import Link from "next/link";
 
-/** This is a ultrasSound video component that displays the ultrasound video and 
+/** This is a ultraSound video component that displays the ultrasound video and 
  * also provides a record button to start the recording
  * 
  * Recording button shows the live data from api that recording was saved completely or not

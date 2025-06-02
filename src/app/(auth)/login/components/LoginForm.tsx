@@ -25,7 +25,7 @@ const [emailId, setEmailId] = useState("")
         catch(err){
           if(axios.isAxiosError(err) && err.response){
             setError(err.response.data.message)
-            console.log("Error" + error)
+            //console.log("Error" + error)
           }
           
         }
@@ -59,6 +59,7 @@ const [emailId, setEmailId] = useState("")
                     setEmailId(e.target.value)
                   }}
                   value={emailId}
+                  data-testid = 'email'
                   autoComplete="email"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
@@ -80,6 +81,7 @@ const [emailId, setEmailId] = useState("")
                     setPassword(e.target.value)
                   }}
                   value={password}
+                  data-testid = 'password'
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />

@@ -1,5 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
+/** This is a About component that displays the information about the company
+ */
 const About = () =>{
     const router = useRouter();
     return(
