@@ -5,5 +5,5 @@ export const useRouter = () => ({
 
 export const push = jest.fn();
 
-export const usePathname = () => '/';
+//export const usePathname = () => '/';
 export const useSearchParams = () => new URLSearchParams();

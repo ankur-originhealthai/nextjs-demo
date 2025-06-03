@@ -14,7 +14,7 @@ import Link from "next/link";
  */
 
 const Ultrasound_video = () => {
-  const [startButton, setStartButton] = useState<String>("Start Recoring");
+  const [startButton, setStartButton] = useState<String>("Start Recording");
   //const [endButton, setEndButton] = useState<Boolean>(false);
   //const [clipUrl, setClipUrl] = useState <string | null>()
 

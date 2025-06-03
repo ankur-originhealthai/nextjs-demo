@@ -22,12 +22,9 @@ const [emailId, setEmailId] = useState("")
         addUser(res.data.data)
         router.push('/')
         }
-        catch(err){
-          if(axios.isAxiosError(err) && err.response){
-            setError(err.response.data.message)
-            //console.log("Error" + error)
-          }
-          
+        catch(err : any){
+          setError(err?.response?.data?.message)
+          console.log(err?.response?.data?.message) 
         }
         
     }
@@ -87,7 +84,7 @@ const [emailId, setEmailId] = useState("")
                 />
               </div>
             </div>
-            <div className = "m-3 text-red-400">{error}</div>
+            <div className = "m-3 text-red-400" data-testid="login-error">{error}</div>
             <div>
               <button
                 onClick={handleLogin}
