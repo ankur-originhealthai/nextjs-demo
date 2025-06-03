@@ -4,6 +4,14 @@ import useUserStore from "../app/store/userStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+
+/** This is a Navbar component that helps the doctors to toggle between different pages
+ * It has options such as -
+ * About
+ * Home
+ * Login
+ * Logout
+ */
 export const Navigations = () => {
   const router = useRouter();
   const pathname = usePathname();
