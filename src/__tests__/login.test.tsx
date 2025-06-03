@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 
 jest.mock("axios");
 const push = jest.fn();
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
-}));
+
 
 jest.mock("../app/store/userStore", () => () => ({
   addUser: jest.fn(),

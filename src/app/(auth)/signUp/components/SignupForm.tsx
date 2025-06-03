@@ -27,13 +27,10 @@ const SignupForm = () => {
       router.push('/login')
       //console.log(res.data)
     }
-    catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message)
-        //console.log("Error" + error)
-      }
-
-    }
+    catch(err : any){
+          setError(err?.response?.data?.message)
+          console.log(err?.response?.data?.message) 
+        }
 
   }
 
@@ -64,6 +61,7 @@ const SignupForm = () => {
                   setFirstName(e.target.value)
                 }}
                 value={firstName}
+                data-testid = "firstName"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -80,6 +78,7 @@ const SignupForm = () => {
                   setLastName(e.target.value)
                 }}
                 value={lastName}
+                data-testid = "lastName"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -96,6 +95,7 @@ const SignupForm = () => {
                   setEmailId(e.target.value)
                 }}
                 value={emailId}
+                data-testid = "emailId"
                 autoComplete="email"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -117,6 +117,7 @@ const SignupForm = () => {
                   setPassword(e.target.value)
                 }}
                 value={password}
+                data-testid = "password"
                 autoComplete="current-password"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
@@ -127,6 +128,7 @@ const SignupForm = () => {
             <button
               onClick={handleLogin}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              data-testid = "signUp"
             >
               SignUp
             </button>
