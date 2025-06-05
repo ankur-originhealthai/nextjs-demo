@@ -6,3 +6,8 @@ const nextConfig: NextConfig = {
 };
 
 export default withNextVideo(nextConfig);
+module.exports = {
+  experimental: {
+    forceSwcTransforms: true,
+  },
+}
