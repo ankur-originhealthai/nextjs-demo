@@ -1,50 +1,52 @@
-"use client"
-import axios from "axios"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import useUserStore from "../store/userStore"
+"use client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import useUserStore from "../store/userStore";
 
 const Patient = () => {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [patientId, setPatienId] = useState(0)
-  const [disease, setDisease] = useState("None")
-  const [error, setError] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [patientId, setPatienId] = useState(0);
+  const [disease, setDisease] = useState("None");
+  const [error, setError] = useState("");
 
-  const route = useRouter()
-    const userData = useUserStore((state) => state.user);
-    const addPatient = useUserStore((state) => state.addPatient)
-    const userId = userData?.userId
-    if(!userData){
-        route.push("/login")
+  const route = useRouter();
+  const userData = useUserStore((state) => state.user);
+  const addPatient = useUserStore((state) => state.addPatient);
+  const userId = userData?.userId;
+  useEffect(() => {
+    if (!userData) {
+      route.push("/login");
     }
+  },[userData]);
   const handlePatientDetails = async () => {
-    setError("")
+    setError("");
     try {
-      const res = await axios.post("http://localhost:3001/patient/patientData", {
+      const res = await axios.post(
+        "http://localhost:3001/patient/patientData",
+        {
+          firstName,
+          lastName,
+          disease,
+          userId,
+          patientId,
+        },
+        { withCredentials: true }
+      );
+
+      addPatient({
         firstName,
         lastName,
         disease,
-        userId,
-        patientId
-      },
-        { withCredentials: true })
-
-      addPatient({firstName,
-        lastName,
-        disease,
-        userId : userData!.userId,
-        patientId})
-      route.push('/ultrasound_video_backend')
+        userId: userData!.userId,
+        patientId,
+      });
+      route.push("/ultrasound_video_backend");
+    } catch (err : any) {
+      setError(err?.response?.data?.message);
     }
-    catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message)
-      }
-
-    }
-
-  }
+  };
 
   return (
     <>
@@ -61,8 +63,11 @@ const Patient = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               Patient Id
             </label>
             <div className="mt-2">
@@ -70,15 +75,19 @@ const Patient = () => {
                 type="number"
                 required
                 onChange={(e) => {
-                  setPatienId(Number(e.target.value))
+                  setPatienId(Number(e.target.value));
                 }}
                 value={patientId}
+                data-testid="patientId"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               First Name
             </label>
             <div className="mt-2">
@@ -86,15 +95,19 @@ const Patient = () => {
                 type="text"
                 required
                 onChange={(e) => {
-                  setFirstName(e.target.value)
+                  setFirstName(e.target.value);
                 }}
                 value={firstName}
+                data-testid="firstName"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               Last Name
             </label>
             <div className="mt-2">
@@ -102,35 +115,38 @@ const Patient = () => {
                 type="text"
                 required
                 onChange={(e) => {
-                  setLastName(e.target.value)
+                  setLastName(e.target.value);
                 }}
                 value={lastName}
+                data-testid="lastName"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
           </div>
-          
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm/6 font-medium text-gray-900"
+              >
                 Disease
               </label>
             </div>
             <div className="mt-2">
               <input
-
                 type="text"
                 required
                 onChange={(e) => {
-                  setDisease(e.target.value)
+                  setDisease(e.target.value);
                 }}
                 value={disease}
+                data-testid="disease"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
           </div>
-          <div className = "m-3 text-red-400">{error}</div>
+          <div className="m-3 text-red-400">{error}</div>
           <div>
             <button
               onClick={handlePatientDetails}
@@ -139,11 +155,9 @@ const Patient = () => {
               Submit
             </button>
           </div>
-
         </div>
       </div>
-
     </>
-  )
-}
-export default Patient
+  );
+};
+export default Patient;
