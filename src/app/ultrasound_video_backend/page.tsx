@@ -21,16 +21,13 @@ const Ultrasound_video = () => {
   const patientData = useUserStore((state) => state.patient);
   const patientId = patientData?.patientId
   const handleRecording = async() => {
-    setStartButton("Recoridng in Progress...");
+    setStartButton("Recording in Progress...");
     
     const res = await axios.post("http://localhost:3001/video/record",{
             patientId
         },
         {withCredentials: true})
 
-    if(res){
-      alert(res.data.message)
-    }
     setInterval(() => {
       setStartButton(res.data.message)
       
@@ -58,14 +55,14 @@ const Ultrasound_video = () => {
        
         <div className="flex mx-4 justify-center items-center-safe">
             <div className="w-[540px] h-[560px] ">
-          <video className="w-full h-full" src="http://localhost:3001/video/stream" autoPlay muted loop>
+          <video className="w-full h-full" data-testid="video_check" src="http://localhost:3001/video/stream" autoPlay muted loop>
           </video>
         </div>
         </div>
         
       <div className="flex justify-center items-center">
         <button
-          className="m-2 p-2 bg-blue-400 rounded-2xl cursor-pointer text-white font-bold "
+          className="m-2 p-2 bg-blue-400 rounded-2xl cursor-pointer text-white font-bold"
           onClick={handleRecording}
         >
           {startButton}
