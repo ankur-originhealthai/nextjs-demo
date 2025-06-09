@@ -1,5 +1,5 @@
 
-import SignupForm from "./components/SignupForm"
+import SignupForm from "../../../components/SignupForm"
 
 
 /** This is a SignUp component that helps the doctors to create there account.

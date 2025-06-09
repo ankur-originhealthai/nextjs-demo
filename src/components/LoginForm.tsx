@@ -2,8 +2,8 @@
 import axios, {AxiosError} from "axios"
 import Link from "next/link"
 import { useState } from "react"
-import { usePathname, useRouter } from "next/navigation";
-import useUserStore from "../../../store/userStore";
+import { useRouter } from "next/navigation";
+import useUserStore from "../store/userStore";
 const LoginForm = () => {
 const [emailId, setEmailId] = useState("")
     const [password, setPassword] = useState("")

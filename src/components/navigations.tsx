@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import useUserStore from "../app/store/userStore";
+import useUserStore from "../store/userStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
