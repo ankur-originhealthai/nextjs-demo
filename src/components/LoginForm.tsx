@@ -35,11 +35,11 @@ const [emailId, setEmailId] = useState("")
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="OMRL"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
+            src="https://littledoctor.sg/wp-content/uploads/2020/07/Stetoskop-LD-Prof-II_fullsize_-scaled-1.jpg"
+            className="mx-auto h-25 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign in to your account
+            Log in to your account
           </h2>
         </div>
 

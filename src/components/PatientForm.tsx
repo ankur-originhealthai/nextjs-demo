@@ -13,12 +13,26 @@ const PatientForm =() =>{
   const route = useRouter();
   const userData = useUserStore((state) => state.user);
   const addPatient = useUserStore((state) => state.addPatient);
+  const addUser = useUserStore((state) => state.addUser);
+  const {addExamId} = useUserStore();
   const userId = userData?.userId;
 
   const router = useRouter();
-  const fetchUser = () => {
-    if (!userData) {
-      router.push("/login");
+  const fetchUser = async () => {
+    
+    if (userData ) {
+      return;
+    }
+    try {
+      const user = await axios.get("http://localhost:3001/profile", {
+        withCredentials: true,
+      });
+      addUser(user.data.user);
+
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.status === 401) {
+        router.push("/login");
+      }
     }
   };
   useEffect(() => {
@@ -54,6 +68,10 @@ const PatientForm =() =>{
         userId: userData!.userId,
         patientId,
       });
+
+      addExamId(res.data.examId);
+      console.log(res.data.examId)
+
       route.push("/ultrasound_video_backend");
     } catch (err : any) {
       setError(err?.response?.data?.message);
@@ -66,10 +84,10 @@ const PatientForm =() =>{
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="OMRL"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
+            src="https://littledoctor.sg/wp-content/uploads/2020/07/Stetoskop-LD-Prof-II_fullsize_-scaled-1.jpg"
+            className="mx-auto h-25 w-auto"
           />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+          <h2 className="mt-4 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Fill your patient's data
           </h2>
         </div>

@@ -57,13 +57,19 @@ export const Navigations = () => {
       console.error(err);
     }
   };
+
+  const handleRecordings = async () => {
+    
+      router.push("/recordings");
+      
+  };
   return (
     <nav className="bg-blue-950 py-3">
       <div>
         <Link
           href="/"
           className={
-            pathname === "/" ? "font-bold mr-4 text-white" : "mr-4 text-white"
+            pathname === "/" ? "mr-4 text-white" : "mr-4 text-white"
           }
         >
           Home
@@ -72,7 +78,7 @@ export const Navigations = () => {
           href="/about"
           className={
             pathname === "/about"
-              ? "font-bold mr-4 text-white"
+              ? "mr-4 text-white"
               : "mr-4 text-white"
           }
         >
@@ -83,7 +89,7 @@ export const Navigations = () => {
             href="/login"
             className={
               pathname === "/login"
-                ? "font-bold mr-4 text-white"
+                ? "mr-4 text-white"
                 : "mr-4 text-white"
             }
           >
@@ -93,6 +99,13 @@ export const Navigations = () => {
 
         {userData&& (
           <>
+
+          <button
+            className="mr-4 text-white cursor-pointer"
+            onClick={handleRecordings}
+          >
+            Recordings
+          </button>
           <button
             className="mr-4 text-white cursor-pointer"
             onClick={handleLogout}

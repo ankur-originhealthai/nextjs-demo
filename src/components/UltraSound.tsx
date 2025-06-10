@@ -14,16 +14,17 @@ import { useRouter } from "next/navigation";
  */
 
 const Ultrasound = () => {
-  const [startButton, setStartButton] = useState<String>("Start Recording");
-  const [timeStamp, setTimeStamp] = useState<Number>(0);
+  const [timeStamp, setTimeStamp] = useState<number>(0);
+  const [status, setStatus] = useState<
+    "idle" | "recording" | "saved" | "failed"
+  >("idle");
+  const [response, setResponse] = useState<string>("");
   const getVideo = useRef<HTMLVideoElement | null>(null);
-  //const [endButton, setEndButton] = useState<Boolean>(false);
-  //const [clipUrl, setClipUrl] = useState <string | null>()
   const userData = useUserStore((state) => state.user);
   const patientData = useUserStore((state) => state.patient);
   const patientId = patientData?.patientId;
-
   const router = useRouter();
+  const { examId } = useUserStore();
   const fetchUser = () => {
     if (!userData) {
       router.push("/login");
@@ -40,23 +41,45 @@ const Ultrasound = () => {
   }, []);
 
   const handleRecording = async () => {
-    setStartButton("Recording in Progress...");
-    const timestamp = getVideo?.current?.currentTime;
-    if (timestamp) {
-      setTimeStamp(timestamp);
-    }
-    const res = await axios.post(
-      "http://localhost:3001/video/record",
-      {
-        patientId,
-        timeStamp,
-      },
-      { withCredentials: true }
-    );
+    try {
+      setStatus("recording");
+      const timestamp = getVideo?.current?.currentTime;
+      if (timestamp) {
+        setTimeStamp(timestamp);
+      }
+      const res = await axios.post(
+        "http://localhost:3001/stream/record",
+        {
+          patientId,
+          timeStamp,
+          examId,
+        },
+        { withCredentials: true }
+      );
+      setResponse(res.data.message);
+      if (res.status === 201) {
+        setStatus("saved");
+      }
 
-    setInterval(() => {
-      setStartButton(res.data.message);
-    }, 5000);
+      setTimeout( () => {
+        setStatus("idle")
+      }, 4000)
+    } catch (err: any) {
+      setStatus("failed");
+    }
+  };
+
+  const startButton = () => {
+    switch (status) {
+      case "idle":
+        return "Start Recording";
+      case "recording":
+        return "Recording in Progress";
+      case "saved":
+        return "Recording saved";
+      case "failed":
+        return "Try again";
+    }
   };
 
   return (
@@ -67,7 +90,7 @@ const Ultrasound = () => {
             ref={getVideo}
             className="w-full h-full"
             data-testid="video_check"
-            src="http://localhost:3001/video/stream"
+            src="http://localhost:3001/stream/video"
             autoPlay
             muted
             loop
@@ -77,10 +100,11 @@ const Ultrasound = () => {
 
       <div className="flex justify-center items-center">
         <button
-          className="m-2 p-2 bg-blue-400 rounded-2xl cursor-pointer text-white font-bold"
+          className="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-300/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           onClick={handleRecording}
+          disabled ={status == "recording" || status == "saved"}
         >
-          {startButton}
+          {startButton()}
         </button>
       </div>
       <div className="flex justify-center items-center">
