@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import useUserStore from "../app/store/userStore";
+import useUserStore from "../store/userStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -41,6 +41,13 @@ export const Navigations = () => {
 
   useEffect(() =>{
       fetchUser()
+      const cookies = document.cookie;
+      const hasToken = cookies.split(";").some(cookie => 
+        cookie.trim().startsWith("token="))
+        if(!hasToken){
+          sessionStorage.removeItem("User-Data")
+          //router.push("/login")
+        }
   }, [])
 
   const handleLogout = async () => {
@@ -51,11 +58,18 @@ export const Navigations = () => {
         { withCredentials: true }
       );
       Logout();
+      sessionStorage.clear();
       router.push("/login");
       
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleRecordings = async () => {
+    
+      router.push("/recordings");
+      
   };
   return (
     <nav className="bg-blue-950 py-3">
@@ -63,7 +77,7 @@ export const Navigations = () => {
         <Link
           href="/"
           className={
-            pathname === "/" ? "font-bold mr-4 text-white" : "mr-4 text-white"
+            pathname === "/" ? "mr-4 text-white" : "mr-4 text-white"
           }
         >
           Home
@@ -72,7 +86,7 @@ export const Navigations = () => {
           href="/about"
           className={
             pathname === "/about"
-              ? "font-bold mr-4 text-white"
+              ? "mr-4 text-white"
               : "mr-4 text-white"
           }
         >
@@ -83,7 +97,7 @@ export const Navigations = () => {
             href="/login"
             className={
               pathname === "/login"
-                ? "font-bold mr-4 text-white"
+                ? "mr-4 text-white"
                 : "mr-4 text-white"
             }
           >
@@ -95,16 +109,23 @@ export const Navigations = () => {
           <>
           <button
             className="mr-4 text-white cursor-pointer"
+            onClick={handleRecordings}
+          >
+            Recordings
+          </button>
+          <button
+            className="mr-4 text-white cursor-pointer"
             onClick={handleLogout}
           >
             Logout 
           </button>
-          <Link href=""
-          className="mr-4 text-white">
+
+          <button
+          className="text-white text-right right-0" >
           Hi, Dr. {userData.firstName}
-        </Link>
-          
-          
+        </button>
+
+        
           </>
         )
         

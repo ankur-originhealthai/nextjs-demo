@@ -3,7 +3,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import useUserStore from "./store/userStore";
+import useUserStore from "../store/userStore";
 import axios from "axios";
 import { useEffect } from "react";
 export default function Home() {
@@ -11,17 +11,20 @@ export default function Home() {
   const userData = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
 
-  const fetchUser = async () => {
+ const fetchUser = async () => {
     
-    if (userData ) {
+    if (userData) {
       return;
     }
     try {
-      const user = await axios.get("http://localhost:3001/profile", {
+      //if(document.cookie.includes('token')){
+        const user = await axios.get("http://localhost:3001/profile", {
         withCredentials: true,
       });
       addUser(user.data.user);
 
+      //}
+      
     } catch (err) {
       if (axios.isAxiosError(err) && err.status === 401) {
         router.push("/login");

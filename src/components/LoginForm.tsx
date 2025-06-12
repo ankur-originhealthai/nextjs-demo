@@ -1,15 +1,43 @@
 "use client"
 import axios, {AxiosError} from "axios"
 import Link from "next/link"
-import { useState } from "react"
-import { usePathname, useRouter } from "next/navigation";
-import useUserStore from "../../../store/userStore";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
+import useUserStore from "../store/userStore";
+
 const LoginForm = () => {
 const [emailId, setEmailId] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError]= useState("")
     const router = useRouter()
     const addUser = useUserStore((state) => state.addUser)
+    const userData = useUserStore((state) => state.user);
+    //console.log("login called")
+
+    const handleUserData = async () => {
+      console.log(document.cookie)
+      let data = sessionStorage.getItem("User-Data");
+    
+
+      if(data){
+      //   console.log("token")
+      //   const user = await axios.get("http://localhost:3001/profile", {
+      //   withCredentials: true,
+      // });
+      router.push('/')
+      }
+    }
+    
+  useEffect(() =>{
+    handleUserData()
+     if(userData){
+      router.replace('/')
+     }
+     
+    },[])
+
+    if(userData) return null
+
 
     const handleLogin = async () =>{
       setError("")
@@ -35,11 +63,11 @@ const [emailId, setEmailId] = useState("")
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             alt="OMRL"
-            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
+            src="https://littledoctor.sg/wp-content/uploads/2020/07/Stetoskop-LD-Prof-II_fullsize_-scaled-1.jpg"
+            className="mx-auto h-25 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign in to your account
+            Log in to your account
           </h2>
         </div>
 

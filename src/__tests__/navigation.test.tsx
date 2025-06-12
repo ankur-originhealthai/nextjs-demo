@@ -2,6 +2,8 @@ import { Navigations } from "../components/navigations";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+
+
 jest.mock("axios");
 
 jest.mock("next/navigation", () => ({
@@ -10,7 +12,6 @@ jest.mock("next/navigation", () => ({
   }),
   usePathname: jest.fn(),
 }));
-
 
 afterEach(() => {
   jest.resetAllMocks();

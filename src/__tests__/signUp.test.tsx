@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
-import SignupForm from "../app/(auth)/signUp/components/SignupForm";
+import SignupForm from "../components/SignupForm";
 
 jest.mock("axios");
 const push = jest.fn();
