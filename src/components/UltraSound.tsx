@@ -15,9 +15,7 @@ import { useRouter } from "next/navigation";
 
 const Ultrasound = () => {
   const [timeStamp, setTimeStamp] = useState<number>(0);
-  const [status, setStatus] = useState<
-    "idle" | "recording" | "saved" | "failed"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "recording" | "saved" | "failed">("idle");
   const [response, setResponse] = useState<string>("");
   const getVideo = useRef<HTMLVideoElement | null>(null);
   const userData = useUserStore((state) => state.user);
@@ -57,13 +55,16 @@ const Ultrasound = () => {
         { withCredentials: true }
       );
       setResponse(res.data.message);
-      if (res.status === 201) {
-        setStatus("saved");
-      }
+      setTimeout(() => {
+        if (res.status === 201) {
+          setStatus("saved");
+        }
+        setTimeout(() => {
+        setStatus("idle");
+      }, 1000);
+      }, 4000);
 
-      setTimeout( () => {
-        setStatus("idle")
-      }, 4000)
+      
     } catch (err: any) {
       setStatus("failed");
     }
@@ -84,8 +85,16 @@ const Ultrasound = () => {
 
   return (
     <div className="bg-black min-h-screen">
-      <div className="flex mx-4 justify-center items-center-safe">
-        <div className="w-[540px] h-[560px] ">
+      <div className="text-amber-50">
+        <div className="navbar bg-blue-950 shadow-sm">
+  <a className=" text-white font-mono">{patientData?.firstName} </a>
+  <a className=" text-white font-mono">{patientData?.lastName} </a>
+   <a className=" text-white font-mono"> Patient Id: {patientData?.patientId}</a>
+</div>
+      </div>
+      <div className="flex justify-center items-center-safe">
+        
+        <div className="w-[540px] h-[500px] ">
           <video
             ref={getVideo}
             className="w-full h-full"
@@ -100,15 +109,15 @@ const Ultrasound = () => {
 
       <div className="flex justify-center items-center">
         <button
-          className="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-300/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          className="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           onClick={handleRecording}
-          disabled ={status == "recording" || status == "saved"}
+          disabled={status == "recording" || status == "saved"}
         >
           {startButton()}
         </button>
       </div>
-      <div className="flex justify-center items-center">
-        <button className="m-2 p-2 bg-blue-400 rounded-2xl cursor-pointer text-white font-bold ">
+      <div className=" m-2 flex justify-center items-center">
+        <button className="cursor-pointer text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
           {" "}
           <Link href={"/patient"}>New Patient ?</Link>
         </button>

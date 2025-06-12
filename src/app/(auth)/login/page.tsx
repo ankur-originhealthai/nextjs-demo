@@ -1,5 +1,4 @@
 
-
 import LoginForm from "../../../components/LoginForm"
 
 /** This is a Login component that helps the doctors to login there account.
@@ -7,6 +6,7 @@ import LoginForm from "../../../components/LoginForm"
  * It uses useRouter hook to navigate to different component.
  * This is an client component.
  */
+
 
 const Login = () => {
     return(

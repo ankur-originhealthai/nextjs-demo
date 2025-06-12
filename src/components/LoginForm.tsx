@@ -1,15 +1,43 @@
 "use client"
 import axios, {AxiosError} from "axios"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
 import useUserStore from "../store/userStore";
+
 const LoginForm = () => {
 const [emailId, setEmailId] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError]= useState("")
     const router = useRouter()
     const addUser = useUserStore((state) => state.addUser)
+    const userData = useUserStore((state) => state.user);
+    //console.log("login called")
+
+    const handleUserData = async () => {
+      console.log(document.cookie)
+      let data = sessionStorage.getItem("User-Data");
+    
+
+      if(data){
+      //   console.log("token")
+      //   const user = await axios.get("http://localhost:3001/profile", {
+      //   withCredentials: true,
+      // });
+      router.push('/')
+      }
+    }
+    
+  useEffect(() =>{
+    handleUserData()
+     if(userData){
+      router.replace('/')
+     }
+     
+    },[])
+
+    if(userData) return null
+
 
     const handleLogin = async () =>{
       setError("")

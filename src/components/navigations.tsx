@@ -41,6 +41,13 @@ export const Navigations = () => {
 
   useEffect(() =>{
       fetchUser()
+      const cookies = document.cookie;
+      const hasToken = cookies.split(";").some(cookie => 
+        cookie.trim().startsWith("token="))
+        if(!hasToken){
+          sessionStorage.removeItem("User-Data")
+          //router.push("/login")
+        }
   }, [])
 
   const handleLogout = async () => {
@@ -51,6 +58,7 @@ export const Navigations = () => {
         { withCredentials: true }
       );
       Logout();
+      sessionStorage.clear();
       router.push("/login");
       
     } catch (err) {
@@ -99,7 +107,6 @@ export const Navigations = () => {
 
         {userData&& (
           <>
-
           <button
             className="mr-4 text-white cursor-pointer"
             onClick={handleRecordings}
@@ -112,12 +119,13 @@ export const Navigations = () => {
           >
             Logout 
           </button>
-          <Link href=""
-          className="mr-4 text-white">
+
+          <button
+          className="text-white text-right right-0" >
           Hi, Dr. {userData.firstName}
-        </Link>
-          
-          
+        </button>
+
+        
           </>
         )
         
