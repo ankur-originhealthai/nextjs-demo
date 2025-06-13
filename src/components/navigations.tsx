@@ -41,14 +41,14 @@ export const Navigations = () => {
 
   useEffect(() => {
     fetchUser();
-    const cookies = document.cookie;
-    const hasToken = cookies
-      .split(";")
-      .some((cookie) => cookie.trim().startsWith("token="));
-    if (!hasToken) {
-      localStorage.clear();
-      //router.push("/login")
-    }
+    // const cookies = document.cookie;
+    // const hasToken = cookies
+    //   .split(";")
+    //   .some((cookie) => cookie.trim().startsWith("token="));
+    // if (!hasToken) {
+    //   sessionStorage.clear();
+    //   //router.push("/login")
+    // }
   }, []);
 
   const handleLogout = async () => {
@@ -59,7 +59,7 @@ export const Navigations = () => {
         { withCredentials: true }
       );
       Logout();
-      localStorage.clear();
+      sessionStorage.clear();
       router.push("/login");
     } catch (err) {
       console.error(err);

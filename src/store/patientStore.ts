@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User } from "../types/userType";
 import { Patient } from "../types/patientType";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { Recording } from "../types/recordingType";
 /** This is a Store component that creates the store for User and Patient data
  * It has different functions such as -
  * 1. addUser
@@ -13,9 +14,11 @@ type userStore = {
   patient: Patient | null;
   isVideoPlaying: boolean
   examId: number | null;
+  recordings: string[];
   addExamId: (examId: number) => void;
   addPatient: (patient: Patient) => void;
   addVideoPlaying: (isVideoPlaying : boolean) => void;
+  addrecordings : (recordings : string []) => void
 };
 export const usePatientStore = create<userStore>()(
   persist(
@@ -23,9 +26,11 @@ export const usePatientStore = create<userStore>()(
       patient: null,
       examId: null,
       isVideoPlaying: false,
+      recordings: [],
       addExamId: (examId) => set({ examId }),
       addPatient: (patient) => set({ patient }),
-      addVideoPlaying : (isVideoPlaying) => set({isVideoPlaying})
+      addVideoPlaying : (isVideoPlaying) => set({isVideoPlaying}),
+      addrecordings : (recordings) => set({recordings})
     }),
     {
       name: "Patient-Data",

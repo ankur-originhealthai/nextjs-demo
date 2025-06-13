@@ -18,6 +18,7 @@ export default function RecordingsPage() {
   const [recordings, setRecordings] = useState<Recordings[]>([]);
   const router = useRouter();
   const addVideoPlaying = usePatientStore((state) => state.addVideoPlaying)
+  const addRecording = usePatientStore((state) => state.addrecordings)
   const hasHydrated = useUserStore.persist?.hasHydrated?.() ?? false
     
     const fetchPatient = () => {
@@ -27,12 +28,7 @@ export default function RecordingsPage() {
       router.push("/patient");
     }
   };
-  useEffect(() => {
-    fetchPatient();
-    if(!hasHydrated){
-      return 
-    }
-  }, [hasHydrated]);
+
 
   const getRecordings = async () => {
     try {
@@ -52,11 +48,13 @@ export default function RecordingsPage() {
     }
   }
   
-  useEffect(() => {
+    useEffect(() => {
     fetchPatient();
-    getRecordings();
-   }, []);
-
+    getRecordings()
+    if(!hasHydrated){
+      return 
+    }
+  }, [hasHydrated, recordings]);
   const handleDelete = async (id: number) => {
     const recordingId = id;
     try {
