@@ -41,7 +41,8 @@ const Ultrasound = () => {
   const handleRecording = async () => {
     try {
       setStatus("recording");
-      const timestamp = getVideo?.current?.currentTime;
+      console.log(getVideo.current?.currentTime)
+      const timestamp:number = getVideo?.current?.currentTime!;
       if (timestamp) {
         setTimeStamp(timestamp);
       }
@@ -49,7 +50,7 @@ const Ultrasound = () => {
         "http://localhost:3001/stream/record",
         {
           patientId,
-          timeStamp,
+          timeStamp:timestamp,
           examId,
         },
         { withCredentials: true }

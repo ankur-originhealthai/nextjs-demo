@@ -72,7 +72,7 @@ const PatientForm =() =>{
       addExamId(res.data.examId);
       console.log(res.data.examId)
 
-      route.push("/ultrasound_video_backend");
+      route.push("/ultrasound");
     } catch (err : any) {
       setError(err?.response?.data?.message);
     }

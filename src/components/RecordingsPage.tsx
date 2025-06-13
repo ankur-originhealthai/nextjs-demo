@@ -40,26 +40,18 @@ export default function RecordingsPage() {
       setError(err?.response?.data?.message);
       //console.log(err?.response?.data?.message);
     }
-  };
-
-  
-  
-
+  }
 
   useEffect(() => {
     fetchPatient();
     getRecordings();
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isVideoPlaying) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    }
-    
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    if(isVideoPlaying){
+      window.onbeforeunload = () => true;
+
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.onbeforeunload = null;
     };
+    }
    }, [isVideoPlaying]);
 
   const handleDelete = async (id: number) => {

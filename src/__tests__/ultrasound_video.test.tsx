@@ -7,7 +7,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 
-import Ultrasound_video from "../app/ultrasound_video_backend/page";
+import Ultrasound_video from "../app/ultrasound/page";
 import axios from "axios";
 
 jest.mock("axios");

@@ -14,9 +14,9 @@ import Ultrasound from "../../components/UltraSound";
  * It makes a api call to get the ultrasound video from the backend and also makes a api call to record the video through backend.
  */
 
-const Ultrasound_video = () => {
+const ultrasound = () => {
   return (
     <Ultrasound />
   )
 };
-export default Ultrasound_video;
+export default ultrasound;
