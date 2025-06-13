@@ -10,25 +10,25 @@ import { persist, createJSONStorage } from "zustand/middleware";
  */
 
 type userStore = {
-  user: User | null;
-  addUser: (user: User) => void;
-  removeUser: () => void;
+  patient: Patient | null;
+  isVideoPlaying: boolean
+  examId: number | null;
+  addExamId: (examId: number) => void;
+  addPatient: (patient: Patient) => void;
+  addVideoPlaying: (isVideoPlaying : boolean) => void;
 };
-export const useUserStore = create<userStore>()(
+export const usePatientStore = create<userStore>()(
   persist(
     (set) => ({
-      user: null,
-     
-      addUser: (user) => set({ user }),
-      removeUser: () => {
-        set(() => ({
-          user: null,
-          
-        }));
-      },
+      patient: null,
+      examId: null,
+      isVideoPlaying: false,
+      addExamId: (examId) => set({ examId }),
+      addPatient: (patient) => set({ patient }),
+      addVideoPlaying : (isVideoPlaying) => set({isVideoPlaying})
     }),
     {
-      name: "User-Data",
+      name: "Patient-Data",
        storage: createJSONStorage(() => sessionStorage),
     }
   )
@@ -50,4 +50,4 @@ export const useUserStore = create<userStore>()(
 //     addPatient : (patient) =>set({patient})
 
 // }))
-export default useUserStore;
+export default usePatientStore;

@@ -3,6 +3,7 @@ import axios from "axios";
 import useUserStore from "../store/userStore";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import usePatientStore from "../store/patientStore";
 
 export default function RecordingsPage() {
   type Recordings = {
@@ -10,19 +11,28 @@ export default function RecordingsPage() {
     video: string;
   };
 
-  const patientData = useUserStore((state) => state.patient);
-  const { examId } = useUserStore();
+  const patientData = usePatientStore((state) => state.patient);
+  const { examId } = usePatientStore();
   const patientId = patientData?.patientId;
   const [error, setError] = useState("");
   const [recordings, setRecordings] = useState<Recordings[]>([]);
   const router = useRouter();
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
-  
-  const fetchPatient = () => {
-    if (!patientData) {
+  const addVideoPlaying = usePatientStore((state) => state.addVideoPlaying)
+  const hasHydrated = useUserStore.persist?.hasHydrated?.() ?? false
+    
+    const fetchPatient = () => {
+    const data = sessionStorage.getItem("Patient-Data")
+    console.log(data)
+    if (! (data)) {
       router.push("/patient");
     }
   };
+  useEffect(() => {
+    fetchPatient();
+    if(!hasHydrated){
+      return 
+    }
+  }, [hasHydrated]);
 
   const getRecordings = async () => {
     try {
@@ -41,18 +51,11 @@ export default function RecordingsPage() {
       //console.log(err?.response?.data?.message);
     }
   }
-
+  
   useEffect(() => {
     fetchPatient();
     getRecordings();
-    if(isVideoPlaying){
-      window.onbeforeunload = () => true;
-
-    return () => {
-      window.onbeforeunload = null;
-    };
-    }
-   }, [isVideoPlaying]);
+   }, []);
 
   const handleDelete = async (id: number) => {
     const recordingId = id;
@@ -87,9 +90,9 @@ export default function RecordingsPage() {
               className="bg-zinc-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
               <video
-                onPlay={() => setIsVideoPlaying(true)}
-                onPause={() => setIsVideoPlaying(false)}
-                onEnded={() => setIsVideoPlaying(false)}
+                onPlay={() => addVideoPlaying(true)}
+                onPause={() => addVideoPlaying(false)}
+                onEnded={() => addVideoPlaying(false)}
                 src={"http://localhost:3001" + rec.video}
                 controls
                 className="w-full h-52 object-cover"

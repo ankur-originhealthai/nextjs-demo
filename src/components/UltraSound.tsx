@@ -4,6 +4,7 @@ import useUserStore from "../store/userStore";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import usePatientStore from "@/store/patientStore";
 
 /** This is a ultraSound video component that displays the ultrasound video and
  * also provides a record button to start the recording
@@ -18,25 +19,25 @@ const Ultrasound = () => {
   const [status, setStatus] = useState<"idle" | "recording" | "saved" | "failed">("idle");
   const [response, setResponse] = useState<string>("");
   const getVideo = useRef<HTMLVideoElement | null>(null);
-  const userData = useUserStore((state) => state.user);
-  const patientData = useUserStore((state) => state.patient);
+  const patientData = usePatientStore((state) => state.patient);
   const patientId = patientData?.patientId;
   const router = useRouter();
-  const { examId } = useUserStore();
-  const fetchUser = () => {
-    if (!userData) {
-      router.push("/login");
-    }
-  };
+  const { examId } = usePatientStore();
+  const hasHydrated = useUserStore.persist?.hasHydrated?.() ?? false
+  
   const fetchPatient = () => {
-    if (!patientData) {
+    const data = sessionStorage.getItem("Patient-Data")
+    console.log(data)
+    if (! (data)) {
       router.push("/patient");
     }
   };
   useEffect(() => {
-    fetchUser();
     fetchPatient();
-  }, []);
+    if(!hasHydrated){
+      return 
+    }
+  }, [hasHydrated]);
 
   const handleRecording = async () => {
     try {

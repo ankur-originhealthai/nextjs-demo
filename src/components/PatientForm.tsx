@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUserStore from "../store/userStore";
+import usePatientStore from "../store/patientStore";
 const PatientForm =() =>{
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -12,14 +13,13 @@ const PatientForm =() =>{
 
   const route = useRouter();
   const userData = useUserStore((state) => state.user);
-  const addPatient = useUserStore((state) => state.addPatient);
+  const addPatient = usePatientStore((state) => state.addPatient);
   const addUser = useUserStore((state) => state.addUser);
-  const {addExamId} = useUserStore();
+  const {addExamId} = usePatientStore();
   const userId = userData?.userId;
 
   const router = useRouter();
   const fetchUser = async () => {
-    
     if (userData ) {
       return;
     }
@@ -40,11 +40,6 @@ const PatientForm =() =>{
   }, []);
 
 
-  useEffect(() => {
-    if (!userData) {
-      route.push("/login");
-    }
-  },[userData]);
   
   const handlePatientDetails = async () => {
     setError("");
@@ -68,10 +63,10 @@ const PatientForm =() =>{
         userId: userData!.userId,
         patientId,
       });
+      
 
       addExamId(res.data.examId);
       console.log(res.data.examId)
-
       route.push("/ultrasound");
     } catch (err : any) {
       setError(err?.response?.data?.message);

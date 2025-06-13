@@ -4,6 +4,7 @@ import useUserStore from "../store/userStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import usePatientStore from "../store/patientStore";
 
 /** This is a Navbar component that helps the doctors to toggle between different pages
  * It has options such as -
@@ -18,37 +19,37 @@ export const Navigations = () => {
   const Logout = useUserStore((state) => state.removeUser);
   const userData = useUserStore((state) => state.user);
   const addUser = useUserStore((state) => state.addUser);
+  const isVideoPlaying = usePatientStore((state) => state.isVideoPlaying);
   const fetchUser = async () => {
-    
     if (userData) {
       return;
     }
     try {
-      if(document.cookie.includes('token')){
+      if (document.cookie.includes("token")) {
         const user = await axios.get("http://localhost:3001/profile", {
-        withCredentials: true,
-      });
-      addUser(user.data.user);
-
+          withCredentials: true,
+        });
+        addUser(user.data.user);
       }
-      
     } catch (err) {
       if (axios.isAxiosError(err) && err.status === 401) {
         router.push("/login");
       }
     }
   };
+  //console.log(isVideoPlaying)
 
-  useEffect(() =>{
-      fetchUser()
-      const cookies = document.cookie;
-      const hasToken = cookies.split(";").some(cookie => 
-        cookie.trim().startsWith("token="))
-        if(!hasToken){
-          sessionStorage.removeItem("User-Data")
-          //router.push("/login")
-        }
-  }, [])
+  useEffect(() => {
+    fetchUser();
+    const cookies = document.cookie;
+    const hasToken = cookies
+      .split(";")
+      .some((cookie) => cookie.trim().startsWith("token="));
+    if (!hasToken) {
+      localStorage.clear();
+      //router.push("/login")
+    }
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -58,36 +59,29 @@ export const Navigations = () => {
         { withCredentials: true }
       );
       Logout();
-      sessionStorage.clear();
+      localStorage.clear();
       router.push("/login");
-      
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleRecordings = async () => {
-    
-      router.push("/recordings");
-      
+    router.push("/recordings");
   };
   return (
     <nav className="bg-blue-950 py-3">
-      <div>
+      {isVideoPlaying === false && <div>
         <Link
           href="/"
-          className={
-            pathname === "/" ? "mr-4 text-white" : "mr-4 text-white"
-          }
+          className={pathname === "/" ? "mr-4 text-white" : "mr-4 text-white"}
         >
           Home
         </Link>
         <Link
           href="/about"
           className={
-            pathname === "/about"
-              ? "mr-4 text-white"
-              : "mr-4 text-white"
+            pathname === "/about" ? "mr-4 text-white" : "mr-4 text-white"
           }
         >
           About
@@ -96,53 +90,34 @@ export const Navigations = () => {
           <Link
             href="/login"
             className={
-              pathname === "/login"
-                ? "mr-4 text-white"
-                : "mr-4 text-white"
+              pathname === "/login" ? "mr-4 text-white" : "mr-4 text-white"
             }
           >
             Login
           </Link>
         )}
 
-        {userData&& (
+        {userData && (
           <>
-          <button
-            className="mr-4 text-white cursor-pointer"
-            onClick={handleRecordings}
-          >
-            Recordings
-          </button>
-          <button
-            className="mr-4 text-white cursor-pointer"
-            onClick={handleLogout}
-          >
-            Logout 
-          </button>
+            <button
+              className="mr-4 text-white cursor-pointer"
+              onClick={handleRecordings}
+            >
+              Recordings
+            </button>
+            <button
+              className="mr-4 text-white cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
 
-          <button
-          className="text-white text-right right-0" >
-          Hi, Dr. {userData.firstName}
-        </button>
-
-        
+            <button className="text-white text-right right-0">
+              Hi, Dr. {userData.firstName}
+            </button>
           </>
-        )
-        
-        }
-
-        
-      </div>
-      {/* <Link
-        href="/products/1"
-        className={
-          pathname.startsWith("/products/1")
-            ? "font-bold mr-4"
-            : "mr-4 text-blue-500"
-        }
-      >
-        Product
-      </Link> */}
+        )}
+      </div>}
     </nav>
   );
 };
